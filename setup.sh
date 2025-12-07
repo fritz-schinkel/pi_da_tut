@@ -69,14 +69,7 @@ EOF
 
 sed -i 's|#DAEMON_CONF=.*|DAEMON_CONF="/etc/hostapd/hostapd.conf"|' /etc/default/hostapd
 
-echo "[7/10] Enabling / disabling services..."
-systemctl disable --now NetworkManager
-systemctl disable --now wpa_supplicant
-systemctl enable --now dnsmasq
-systemctl enable --now hostapd
-systemctl enable --now juplabd.service
-
-echo "[8/10] Creating AP ON/OFF scripts in /usr/local/bin ..."
+echo "7/10] Creating AP ON/OFF scripts in /usr/local/bin ..."
 
 cat <<'EOF' >/usr/local/bin/ap_on
 #!/bin/bash
@@ -123,7 +116,7 @@ echo "📶 WLAN client active → Internet accessible"
 EOF
 chmod +x /usr/local/bin/ap_off
 
-echo "[9/10] Creating show_ap_config..."
+echo "[8/10] Creating show_ap_config..."
 
 cat <<'EOF' >/usr/local/bin/show_ap_config
 #!/bin/bash
@@ -161,18 +154,16 @@ systemctl status wpa_supplicant --no-pager
 echo
 echo "====== juplabd ==================================================="
 systemctl status juplabd --no-pager
-
-echo "--- dhcpcd.conf ---"
-cat /etc/dhcpcd.conf
-echo "--- dnsmasq.conf ---"
-cat /etc/dnsmasq.conf
-echo "--- hostapd.conf ---"
-cat /etc/hostapd/hostapd.conf
-echo "==== SERVICE STATUS ===="
-systemctl status dnsmasq --no-pager
-systemctl status hostapd --no-pager
 EOF
 chmod +x /usr/local/bin/show_ap_config
+
+echo "[9/10] Enabling / disabling services..."
+systemctl disable --now NetworkManager
+#systemctl disable --now wpa_supplicant
+systemctl enable --now dnsmasq
+systemctl enable --now hostapd
+systemctl enable --now juplabd.service
+
 
 echo "[10/10] Setup complete. Reboot recommended."
 echo "Run 'sudo reboot' now."
