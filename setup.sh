@@ -22,7 +22,8 @@ sudo apt -y install dhcpcd dnsmasq hostapd git python3-venv python3-pip python3-
 
 echo "[2/10] Creating JupyterLab environment..."
 sudo mkdir -p /opt/jupyterlab
-sudo chown "${JUP_USER}" /opt/jupyterlabpython3 -m venv /opt/jupyterlab/venv
+sudo chown "${JUP_USER}" /opt/jupyterlab
+python3 -m venv /opt/jupyterlab/venv
 /opt/jupyterlab/venv/bin/pip install --upgrade pip
 /opt/jupyterlab/venv/bin/pip install jupyterlab
 

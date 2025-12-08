@@ -35,6 +35,7 @@ cd pi_da_tut
 
 Next we copy the tutorial to ``~/pi_da_tut`` on our machine using e.g. FileZilla. From that we can install the ``dadk``:
 ````
+source /opt/jupyterlab/venv/bin/activate
 cd da-tutorial
 pip install -U Software/dadk-light.tar.bz2
 ````
