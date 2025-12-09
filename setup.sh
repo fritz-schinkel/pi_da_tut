@@ -8,10 +8,10 @@ JUP_USER="$(whoami)"
 AP_SSID="LabApp"
 AP_WIFI_PASS="your_AP_passphrase_min_8_chars"
 AP_IP="192.168.42.41"
-RANGE_START="192.168.4.1"
-RANGE_END="192.168.4.40"
+RANGE_START="192.168.42.1"
+RANGE_END="192.168.42.40"
 
-if [ "${JUP_USER}" = "$(whoami)" ] || [ "${AP_SSID}" = "LabApp" ] || [ "${AP_WIFI_PASS}" = "your_AP_passphrase_min_8_chars" ]; then
+if [ "${JUP_USER}" = "$(whoami)" ] && [ "${AP_SSID}" = "LabApp" ] && [ "${AP_WIFI_PASS}" = "your_AP_passphrase_min_8_chars" ]; then
   read -p "Do you want to adapt configuration variables at the beginning of the script? (y/n) " choice
 
   if [[ "$choice" =~ ^[Yy]$ ]]; then
