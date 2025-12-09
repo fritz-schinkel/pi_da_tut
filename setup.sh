@@ -28,6 +28,22 @@ python3 -m venv /opt/jupyterlab/venv
 /opt/jupyterlab/venv/bin/pip install jupyterlab
 
 echo "[3/10] Creating JupyterLab systemd service..."
+
+# --- Add sudo shutdown rule if not exists ---
+SUDOERS_FILE="/etc/sudoers.d/jupyter_shutdown"
+
+# Allow all sudo users to shutdown without password
+RULE="%sudo ALL=(ALL) NOPASSWD: /usr/sbin/shutdown"
+
+# Create only if not present
+if [ ! -f "$SUDOERS_FILE" ] || ! grep -q "/usr/sbin/shutdown" "$SUDOERS_FILE"; then
+    echo "$RULE" | sudo tee "$SUDOERS_FILE" >/dev/null
+    sudo chmod 440 "$SUDOERS_FILE"
+    echo "[INFO] Added shutdown sudo rule for group sudo"
+else
+    echo "[INFO] Shutdown sudo rule already present"
+fi
+
 sudo bash -c "cat > /etc/systemd/system/juplabd.service <<EOF 
 [Unit]
 Description=JupyterLab Server
@@ -38,7 +54,8 @@ Type=simple
 ExecStart=/opt/jupyterlab/venv/bin/jupyter lab --ip=0.0.0.0 --no-browser --NotebookApp.token='' --NotebookApp.password=''
 WorkingDirectory=/home/${JUP_USER}
 User=${JUP_USER}
-Restart=always
+Restart=no
+ExecStopPost=/usr/bin/sudo /usr/sbin/shutdown -h now
 
 [Install]
 WantedBy=multi-user.target
